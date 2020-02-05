@@ -117,6 +117,7 @@ stages:
             - task: AzureWebApp@1
               displayName: 'Azure App Service Deploy: website'
               inputs:
-                azureSubscription: 'Resource Manager - Tailspin - Space Game'
+                azureSubscription: 'Systemsltd-MPN(48a4a60c-e7f1-4a10-a684-6461d1a8ff8f)'
+                appType: 'webAppLinux'
                 appName: '$(WebAppNameDev)'
                 package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
