@@ -1,11 +1,11 @@
 trigger:
   - '*'
 
-  variables:
+variables:
     buildConfiguration: 'Release'
 
-  stages:
-  - stage: 'Build'
+    stages:
+    - stage: 'Build'
     displayName: 'Build the web application'
     jobs:
     - job: 'Build'
@@ -65,21 +65,21 @@ trigger:
       - publish: '$(Build.ArtifactStagingDirectory)'
         artifact: drop
 
-  - stage: 'Dev'
-    displayName: 'Deploy to the dev environment'
+    - stage: 'Dev'
+      displayName: 'Deploy to the dev environment'
     dependsOn: Build
-    jobs:
-    - job: Provision
-      displayName: 'Provision Azure App Service'
-      pool:
-        vmImage: 'ubuntu-16.04'
-      variables:
-      - group: Release
-      steps:
+      jobs:
+        - job: Provision
+          displayName: 'Provision Azure App Service'
+          pool:
+          vmImage: 'ubuntu-16.04'
+          variables:
+        - group: Release
+          steps:
       - script: |
+
           # Exit when any command returns a failure status.
           set -e
-
           # Write terraform.tfvars.
           echo 'resource_group_location = "'$(ResourceGroupLocation)'"' | tee terraform.tfvars
           # Write backend.tfvars.
