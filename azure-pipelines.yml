@@ -1,10 +1,10 @@
 trigger:
   - '*'
 
-  variables:
+variables:
     buildConfiguration: 'Release'
 
-  stages:
+stages:
   - stage: 'Build'
     displayName: 'Build the web application'
     jobs:
@@ -78,7 +78,7 @@ trigger:
       - task: VSBuild@1
         displayName: 'Build the database project'
         inputs:
-          project: '**/*.sqlproj'
+         project: '**/*.sqlproj'
 
       - task: CopyFiles@2
         displayName: 'Copy dacpac file to staging directory'
@@ -134,7 +134,7 @@ trigger:
             steps:
             - task: AzureKeyVault@1
               inputs:
-                azureSubscription: 'Resource Manager - Tailspin - Space Game'
+                azureSubscription: 'SpaceGame-Web-ProvisionDB'
                 keyVaultName: '$(keyVaultName)'
                 secretsFilter: '*'
             - download: current
@@ -143,7 +143,7 @@ trigger:
             - task: SqlAzureDacpacDeployment@1
               displayName: Generate schema change script
               inputs:
-                azureSubscription: 'Resource Manager - Tailspin - Space Game'
+                azureSubscription: 'SpaceGame-Web-ProvisionDB'
                 authenticationType: 'server'
                 serverName: 'tailspin-space-game-sql-dev-$(uniqueSuffix).database.windows.net'
                 databaseName: 'tailspindatabase'
@@ -213,7 +213,7 @@ trigger:
             steps:
             - task: AzureKeyVault@1
               inputs:
-                azureSubscription: 'Resource Manager - Tailspin - Space Game'
+                azureSubscription: 'SpaceGame-Web-ProvisionDB'
                 keyVaultName: '$(keyVaultName)'
                 secretsFilter: '*'
             - download: current
@@ -222,7 +222,7 @@ trigger:
             - task: SqlAzureDacpacDeployment@1
               displayName: 'Deploy SQL schema'
               inputs:
-                azureSubscription: 'Resource Manager - Tailspin - Space Game'
+                azureSubscription: 'SpaceGame-Web-ProvisionDB'
                 authenticationType: 'server'
                 serverName: 'tailspin-space-game-sql-dev-$(uniqueSuffix).database.windows.net'
                 databaseName: 'tailspindatabase'
@@ -279,7 +279,7 @@ trigger:
             steps:
             - task: AzureKeyVault@1
               inputs:
-                azureSubscription: 'Resource Manager - Tailspin - Space Game'
+                azureSubscription: 'SpaceGame-Web-ProvisionDB'
                 keyVaultName: '$(keyVaultName)'
                 secretsFilter: '*'
             - download: current
@@ -287,13 +287,13 @@ trigger:
             - task: AzureWebApp@1
               displayName: 'Azure App Service Deploy: website'
               inputs:
-                azureSubscription: 'Resource Manager - Tailspin - Space Game'
+                azureSubscription: 'SpaceGame-Web-ProvisionDB'
                 appName: 'tailspin-space-game-web-dev-$(uniqueSuffix)'
                 package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
             - task: AzureAppServiceSettings@1
               displayName: Azure App Service Settings
               inputs:
-                azureSubscription: 'Resource Manager - Tailspin - Space Game'
+                azureSubscription: 'SpaceGame-Web-ProvisionDB'
                 appName: 'tailspin-space-game-web-dev-$(uniqueSuffix)'
                 connectionStrings: |
                   [{ "name": "DefaultConnection","value": "$(connectionString)","type": "SQLAzure","slotSetting": false }]
